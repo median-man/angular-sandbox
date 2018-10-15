@@ -2,7 +2,7 @@ import { EventEmitter, Injectable } from '@angular/core';
 
 import { CounterService } from './counter.service';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class UsersService {
   activateUser = new EventEmitter<number>();
   deactivateUser = new EventEmitter<number>();
