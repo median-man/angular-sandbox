@@ -1,14 +1,6 @@
-# AngularSandbox
+# MyFirstApp
 
-This is my Angular Sandbox. Each branch is an exploration project for learning how to implement various features with Angular.
-
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 6.2.4.
-
-## Starting a New Branch
-
-After checking out the new branch, run $ `git reset --hard starter-bootstrap` to delete the history or $ `git revert starter-bootstrap` to add a commit which returns the project to its initial state with Bootstrap styles included.
-
-A commit tagged `starter-bootstrap` may be used to start from the boilerplate produced by starting a project with Angular CLI. The app template and component have been cleared of the boilerplate details. Bootstrap CSS has been added as a dependency and included in the styles defined in `angular.json`.
+This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 6.0.0.
 
 ## Development server
 
