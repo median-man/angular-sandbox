@@ -1,31 +1,23 @@
 import { Component, OnInit } from '@angular/core';
 
 import { Recipe } from './recipe.model';
+import { RecipeService } from './recipe.service';
 
 @Component({
   selector: 'app-recipes',
   templateUrl: './recipes.component.html',
-  styleUrls: ['./recipes.component.css']
+  styleUrls: ['./recipes.component.css'],
+  providers: [RecipeService]
 })
 
 export class RecipeBookComponent implements OnInit {
-  recipes: Recipe[] = [
-    new Recipe(
-      'A Test Recipe',
-      'This is just a test.',
-      'http://assets.kraftfoods.com/recipe_images/opendeploy/54852_640x428.jpg'),
-    new Recipe(
-      'Another Test',
-      'This is just a test.',
-      'http://assets.kraftfoods.com/recipe_images/opendeploy/54852_640x428.jpg'),
-  ];
+  selectedRecipe: Recipe;
 
-  selectedRecipe = null;
+  constructor(private recipeService: RecipeService) { }
 
   ngOnInit() {
-  }
-
-  selectRecipe(recipe) {
-    this.selectedRecipe = recipe;
+    this.recipeService.recipeSelect.subscribe((recipe: Recipe) => {
+      this.selectedRecipe = recipe;
+    });
   }
 }
