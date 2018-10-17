@@ -12,6 +12,7 @@ import { ItemComponent } from './recipes/list/item/item.component';
 import { DetailComponent } from './recipes/detail/detail.component';
 import { DropdownDirective } from './shared/dropdown.directive';
 import { AppRoutingModule } from './app-routing.module';
+import { DetailPlaceholderComponent } from './recipes/detail-placeholder/detail-placeholder.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import { AppRoutingModule } from './app-routing.module';
     RecipeListComponent,
     ItemComponent,
     DetailComponent,
-    DropdownDirective
+    DropdownDirective,
+    DetailPlaceholderComponent
   ],
   imports: [
     BrowserModule,

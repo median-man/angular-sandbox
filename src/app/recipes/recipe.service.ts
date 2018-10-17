@@ -7,6 +7,7 @@ import { Ingredient } from '../shared/ingredient.model';
 export class RecipeService {
   private recipes: Recipe[] = [
     new Recipe(
+      '1',
       'Halloween Bar',
       'This is a tasty halloween cookie bar.',
       'http://assets.kraftfoods.com/recipe_images/opendeploy/54852_640x428.jpg',
@@ -16,6 +17,7 @@ export class RecipeService {
       ]
     ),
     new Recipe(
+      '2',
       'Chocolate Chip Cookies',
       'Classic favorite.',
       'https://images-gmi-pmc.edge-generalmills.com/087d17eb-500e-4b26-abd1-4f9ffa96a2c6.jpg',
@@ -28,4 +30,6 @@ export class RecipeService {
   ];
 
   getRecipes = () => [...this.recipes];
+
+  getRecipeById = (id: string) => this.recipes.filter(recipe => recipe.id === id)[0];
 }
