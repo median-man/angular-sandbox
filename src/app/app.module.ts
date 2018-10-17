@@ -13,6 +13,7 @@ import { DetailComponent } from './recipes/detail/detail.component';
 import { DropdownDirective } from './shared/dropdown.directive';
 import { AppRoutingModule } from './app-routing.module';
 import { DetailPlaceholderComponent } from './recipes/detail-placeholder/detail-placeholder.component';
+import { EditRecipeComponent } from './recipes/edit-recipe/edit-recipe.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { DetailPlaceholderComponent } from './recipes/detail-placeholder/detail-
     ItemComponent,
     DetailComponent,
     DropdownDirective,
-    DetailPlaceholderComponent
+    DetailPlaceholderComponent,
+    EditRecipeComponent
   ],
   imports: [
     BrowserModule,
