@@ -9,8 +9,4 @@ import { RecipeService } from './recipe.service';
   providers: [RecipeService]
 })
 
-export class RecipeBookComponent implements OnInit {
-  constructor() { }
-
-  ngOnInit() { }
-}
+export class RecipeBookComponent { }
