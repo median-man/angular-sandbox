@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, FormArray, Validators } from '@angular/forms';
-import { ActivatedRoute, Params } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 
 import { Ingredient } from 'src/app/shared/ingredient.model';
 import { RecipeService } from '../recipe.service';
@@ -8,7 +8,8 @@ import { Recipe } from '../recipe.model';
 
 @Component({
   selector: 'app-edit-recipe',
-  templateUrl: './edit-recipe.component.html'
+  templateUrl: './edit-recipe.component.html',
+  styleUrls: ['./edit-recipe.component.css']
 })
 
 export class EditRecipeComponent implements OnInit {
@@ -16,7 +17,11 @@ export class EditRecipeComponent implements OnInit {
   editMode = false;
   private recipeForm: FormGroup;
 
-  constructor(private route: ActivatedRoute, private recipeService: RecipeService) { }
+  constructor(
+    private route: ActivatedRoute,
+    private recipeService: RecipeService,
+    private router: Router
+  ) { }
 
   ngOnInit() {
     this.route.params.subscribe((params: Params) => {
@@ -36,6 +41,8 @@ export class EditRecipeComponent implements OnInit {
       recipe.ingredients
         .map(this.createIngredientCtrl)
         .forEach(control => ingredientControls.push(control));
+    } else {
+      recipe = new Recipe('', '', '', '', []);
     }
 
     this.recipeForm = new FormGroup({
@@ -57,5 +64,20 @@ export class EditRecipeComponent implements OnInit {
 
   onAddIngredient() {
     (<FormArray>this.recipeForm.get('ingredients')).push(this.createIngredientCtrl());
+  }
+
+  onSubmit() {
+    const { name, imagePath, description, ingredients } = this.recipeForm.value;
+    const recipe = new Recipe(this.id, name, description, imagePath, ingredients);
+    let navPath = '../';
+
+    if (this.editMode) {
+      this.recipeService.updateRecipe(recipe);
+    } else {
+      recipe.id = this.recipeService.addRecipe(recipe).id;
+      navPath += recipe.id;
+    }
+
+    this.router.navigate([navPath], { relativeTo: this.route });
   }
 }
