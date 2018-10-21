@@ -80,4 +80,8 @@ export class EditRecipeComponent implements OnInit {
 
     this.router.navigate([navPath], { relativeTo: this.route });
   }
+
+  onCancel() {
+    this.router.navigate(['..'], { relativeTo: this.route });
+  }
 }
