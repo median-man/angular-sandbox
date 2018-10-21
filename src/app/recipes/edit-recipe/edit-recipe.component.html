@@ -25,14 +25,24 @@
         <div class="col-xs-12">
           <div class="form-group">
             <label for="imgPath">Image URL</label>
-            <input type="text" name="imgPath" id="imgPath" class="form-control" formControlName="imagePath">
+            <input
+              type="text"
+              name="imgPath"
+              id="imgPath"
+              class="form-control"
+              formControlName="imagePath"
+              #imgUrl>
           </div>
         </div>
       </div>
 
       <div class="row">
         <div class="col-xs-12">
-          <img src="" alt="" class="img-responsive">  
+          <img
+            [src]="imgUrl.value"
+            alt="preview of recipe image"
+            style="height: 200px;"
+            class="img-responsive">  
         </div>
       </div>
 
