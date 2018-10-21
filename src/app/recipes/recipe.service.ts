@@ -57,4 +57,10 @@ export class RecipeService {
     const maxId = this.recipes.reduce((max, { id }) => id > max ? id : max, initialId);
     return (parseFloat(maxId) + 1).toString();
   }
+
+  deleteRecipe = (id: string) => {
+    this.recipes = this.recipes.filter((recipe) => recipe.id !== id);
+    this.recipesChanged.next(this.getRecipes());
+    return this;
+  }
 }
