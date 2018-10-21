@@ -1,10 +1,13 @@
-import { Injectable, EventEmitter } from '@angular/core';
+import { Injectable } from '@angular/core';
+import { Subject } from 'rxjs';
 
 import { Recipe } from './recipe.model';
 import { Ingredient } from '../shared/ingredient.model';
 
 @Injectable({ providedIn: 'root' })
 export class RecipeService {
+  recipesChanged = new Subject<Recipe[]>();
+
   private recipes: Recipe[] = [
     new Recipe(
       '1',
@@ -32,4 +35,26 @@ export class RecipeService {
   getRecipes = () => [...this.recipes];
 
   getRecipeById = (id: string) => this.recipes.filter(recipe => recipe.id === id)[0];
+
+  updateRecipe = (updatedRec: Recipe) => {
+    this.recipes = this.recipes.map(
+      (recipe: Recipe) => recipe.id === updatedRec.id ? updatedRec : recipe
+    );
+    this.recipesChanged.next(this.getRecipes());
+    return this;
+  }
+
+  addRecipe = (values: any) => {
+    const id = this.createId();
+    const newRecipe = new Recipe(id, values.name, values.description, values.imagePath, values.ingredients);
+    this.recipes = this.getRecipes().concat([newRecipe]);
+    this.recipesChanged.next(this.getRecipes());
+    return this.getRecipeById(id);
+  }
+
+  private createId = () => {
+    const initialId = '1';
+    const maxId = this.recipes.reduce((max, { id }) => id > max ? id : max, initialId);
+    return (parseFloat(maxId) + 1).toString();
+  }
 }
