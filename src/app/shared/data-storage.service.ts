@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { tap } from 'rxjs/operators';
+import { tap, map } from 'rxjs/operators';
 
 import { RecipeService } from '../recipes/recipe.service';
 import { Recipe } from '../recipes/recipe.model';
@@ -21,6 +21,12 @@ export class DataStorageService {
     return this.httpClient
       .get<Recipe[]>(this.DATA_URL)
       .pipe(
+        map(recipes => recipes.map(recipe => {
+          if (!recipe.ingredients) {
+            recipe.ingredients = [];
+          }
+          return recipe;
+        })),
         tap(recipes => this.recipeSvc.setAll(recipes))
       );
   }
