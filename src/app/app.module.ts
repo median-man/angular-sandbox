@@ -16,7 +16,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { DetailPlaceholderComponent } from './recipes/detail-placeholder/detail-placeholder.component';
 import { EditRecipeComponent } from './recipes/edit-recipe/edit-recipe.component';
 import { SignupComponent } from './auth/signup/signup.component';
-// import { SigninComponent } from './auth/signin/signin.component';
+import { SigninComponent } from './auth/signin/signin.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +32,7 @@ import { SignupComponent } from './auth/signup/signup.component';
     DetailPlaceholderComponent,
     EditRecipeComponent,
     SignupComponent,
-    // SigninComponent
+    SigninComponent
   ],
   imports: [
     BrowserModule,

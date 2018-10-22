@@ -7,12 +7,12 @@ import { DetailComponent } from './recipes/detail/detail.component';
 import { DetailPlaceholderComponent } from './recipes/detail-placeholder/detail-placeholder.component';
 import { EditRecipeComponent } from './recipes/edit-recipe/edit-recipe.component';
 import { SignupComponent } from './auth/signup/signup.component';
-// import { SigninComponent } from './auth/signin/signin.component';
+import { SigninComponent } from './auth/signin/signin.component';
 
 const appRoutes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'recipes' },
   { path: 'signup', component: SignupComponent },
-  // { path: 'signin', component: SigninComponent },
+  { path: 'signin', component: SigninComponent },
   { path: 'shopping-list', component: ShoppingListComponent },
   {
     path: 'recipes',
