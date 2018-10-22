@@ -63,4 +63,10 @@ export class RecipeService {
     this.recipesChanged.next(this.getRecipes());
     return this;
   }
+
+  setAll = (recipes: Recipe[]) => {
+    this.recipes = [...recipes];
+    this.recipesChanged.next(this.getRecipes());
+    return this;
+  }
 }
