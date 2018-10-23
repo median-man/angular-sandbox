@@ -23,4 +23,12 @@ export class AuthService {
   getToken(): Promise<string> {
     return firebase.auth().currentUser.getIdToken();
   }
+
+  isAuthenticated() {
+    return firebase.auth().currentUser ? true : false;
+  }
+
+  logout() {
+    return firebase.auth().signOut();
+  }
 }
