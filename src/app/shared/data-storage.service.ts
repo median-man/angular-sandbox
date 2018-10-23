@@ -5,7 +5,7 @@ import { tap, map, switchMap } from 'rxjs/operators';
 import { RecipeService } from '../recipes/recipe.service';
 import { Recipe } from '../recipes/recipe.model';
 import { AuthService } from '../auth/auth.service';
-import { from, of } from 'rxjs';
+import { from, of, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -21,15 +21,14 @@ export class DataStorageService {
 
   }
 
-  private dataUrlWithAuth = () => {
-    const url = (token: string) => `${this.DATA_URL}?auth=${token}`;
-    return from(this.authService.getToken()).pipe(map(url));
+  private createRequest(method: string, body?: any) {
+    const createUrl = (token: string) => `${this.DATA_URL}?auth=${token}`;
+    const withAuth = () => from(this.authService.getToken()).pipe(map(createUrl));
+    return withAuth().pipe(switchMap(url => this.httpClient[method](url, body)));
   }
 
   storeRecipes() {
-    const request = (url: string) => this.httpClient
-      .put(url, this.recipeSvc.getRecipes());
-    return this.dataUrlWithAuth().pipe(switchMap(request));
+    return this.createRequest('put', this.recipeSvc.getRecipes());
   }
 
   getRecipes() {
@@ -39,12 +38,9 @@ export class DataStorageService {
       }
       return recipe;
     };
-    const request = (url: string) => this.httpClient
-      .get<Recipe[]>(url)
-      .pipe(
-        map(recipes => recipes.map(withIngredients)),
-        tap(recipes => this.recipeSvc.setAll(recipes))
-      );
-    return this.dataUrlWithAuth().pipe(switchMap(request));
+    return this.createRequest('get').pipe(
+      map((recipes: Recipe[]) => recipes.map(withIngredients)),
+      tap(recipes => this.recipeSvc.setAll(recipes))
+    );
   }
 }
