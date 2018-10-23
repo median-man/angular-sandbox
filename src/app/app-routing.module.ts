@@ -8,6 +8,7 @@ import { DetailPlaceholderComponent } from './recipes/detail-placeholder/detail-
 import { EditRecipeComponent } from './recipes/edit-recipe/edit-recipe.component';
 import { SignupComponent } from './auth/signup/signup.component';
 import { SigninComponent } from './auth/signin/signin.component';
+import { AuthGuardService } from './auth/auth-guard.service';
 
 const appRoutes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'recipes' },
@@ -19,9 +20,9 @@ const appRoutes: Routes = [
     component: RecipeBookComponent,
     children: [
       { path: '', pathMatch: 'full', component: DetailPlaceholderComponent },
-      { path: 'new', component: EditRecipeComponent },
+      { path: 'new', component: EditRecipeComponent, canActivate: [AuthGuardService] },
       { path: ':id', component: DetailComponent },
-      { path: ':id/edit', component: EditRecipeComponent }
+      { path: ':id/edit', component: EditRecipeComponent, canActivate: [AuthGuardService] }
     ]
   }
 ];
