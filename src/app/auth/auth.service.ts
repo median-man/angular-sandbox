@@ -6,13 +6,10 @@ import 'firebase/auth';
   providedIn: 'root'
 })
 export class AuthService {
-  private token = '';
-
   signupUser(email: string, password: string) {
     firebase
       .auth()
       .createUserWithEmailAndPassword(email, password)
-      .then(() => this.getToken())
       .catch(console.log);
   }
 
@@ -20,12 +17,10 @@ export class AuthService {
     firebase
       .auth()
       .signInWithEmailAndPassword(email, password)
-      .then(() => this.getToken())
       .catch(console.log);
   }
 
-  getToken() {
-    firebase.auth().currentUser.getIdToken().then((token: string) => this.token = token);
-    return this.token;
+  getToken(): Promise<string> {
+    return firebase.auth().currentUser.getIdToken();
   }
 }
