@@ -33,6 +33,7 @@ const routes: Routes = [
   imports: [
     RouterModule.forChild(routes)
   ],
+  providers: [AuthGuardService],
   exports: [RouterModule]
 })
 export class RecipesRoutingModule {
