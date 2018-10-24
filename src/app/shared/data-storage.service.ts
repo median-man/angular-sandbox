@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { tap, map, switchMap } from 'rxjs/operators';
 
 import { RecipeService } from '../recipes/recipe.service';
 import { Recipe } from '../recipes/recipe.model';
 import { AuthService } from '../auth/auth.service';
-import { from, of, Observable } from 'rxjs';
+import { from } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -21,14 +21,19 @@ export class DataStorageService {
 
   }
 
-  private createRequest(method: string, body?: any) {
-    const createUrl = (token: string) => `${this.DATA_URL}?auth=${token}`;
-    const withAuth = () => from(this.authService.getToken()).pipe(map(createUrl));
-    return withAuth().pipe(switchMap(url => this.httpClient[method](url, body)));
+  private createRequestWithAuthParam(method: string, body?: any) {
+    return from(this.authService.getToken())
+      .pipe(switchMap(
+        authToken => this.httpClient.request(
+          method,
+          this.DATA_URL,
+          { body, params: new HttpParams().set('auth', authToken) }
+        ))
+      );
   }
 
   storeRecipes() {
-    return this.createRequest('put', this.recipeSvc.getRecipes());
+    return this.createRequestWithAuthParam('put', this.recipeSvc.getRecipes());
   }
 
   getRecipes() {
@@ -38,7 +43,7 @@ export class DataStorageService {
       }
       return recipe;
     };
-    return this.createRequest('get').pipe(
+    return this.createRequestWithAuthParam('get').pipe(
       map((recipes: Recipe[]) => recipes.map(withIngredients)),
       tap(recipes => this.recipeSvc.setAll(recipes))
     );
