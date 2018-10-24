@@ -10,7 +10,7 @@ import { DetailComponent } from './detail/detail.component';
 
 const routes: Routes = [
   {
-    path: 'recipes',
+    path: '',
     component: RecipeBookComponent,
     children: [
       { path: '', pathMatch: 'full', component: DetailPlaceholderComponent },

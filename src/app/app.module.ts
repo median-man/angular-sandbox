@@ -5,7 +5,6 @@ import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { SharedModule } from './shared/shared.module';
 import { AuthModule } from './auth/auth.module';
-import { RecipesModule } from './recipes/recipes.module';
 import { ShoppingListModule } from './shopping-list/shopping-list.module';
 
 import { AppComponent } from './app.component';
@@ -21,7 +20,6 @@ import { HomeComponent } from './home/home.component';
   imports: [
     SharedModule,
     AuthModule,
-    RecipesModule,
     ShoppingListModule,
     BrowserModule,
     AppRoutingModule,
