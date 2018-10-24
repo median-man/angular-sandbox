@@ -11,7 +11,7 @@ import { RecipeService } from '../recipe.service';
 })
 
 export class DetailComponent implements OnInit {
-  private recipe: Recipe;
+  recipe: Recipe;
 
   constructor(
     private shoppingListService: ShoppingListService,

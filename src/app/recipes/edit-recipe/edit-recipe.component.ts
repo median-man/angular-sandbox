@@ -15,7 +15,7 @@ import { Recipe } from '../recipe.model';
 export class EditRecipeComponent implements OnInit {
   id: string;
   editMode = false;
-  private recipeForm: FormGroup;
+  recipeForm: FormGroup;
 
   constructor(
     private route: ActivatedRoute,
@@ -62,8 +62,12 @@ export class EditRecipeComponent implements OnInit {
     });
   }
 
+  ingredientControls() {
+    return (<FormArray>this.recipeForm.get('ingredients'));
+  }
+
   onAddIngredient() {
-    (<FormArray>this.recipeForm.get('ingredients')).push(this.createIngredientCtrl());
+    this.ingredientControls().push(this.createIngredientCtrl());
   }
 
   onSubmit() {
@@ -86,6 +90,6 @@ export class EditRecipeComponent implements OnInit {
   }
 
   onRemoveIngredient(index: number) {
-    (<FormArray>this.recipeForm.get('ingredients')).removeAt(index);
+    this.ingredientControls().removeAt(index);
   }
 }
