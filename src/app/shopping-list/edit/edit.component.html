@@ -23,7 +23,7 @@
               </button>
             </div>
             <div class="btn-group" role="group">
-              <button class="btn btn-danger" type="button" (click)="onDelete()">Delete</button>
+              <button class="btn btn-danger" type="button" (click)="onDelete()" [disabled]="!editMode">Delete</button>
             </div>
             <div class="btn-group" role="group">
               <button class="btn btn-primary" type="button" (click)="resetForm()">Clear</button>
