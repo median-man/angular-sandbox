@@ -22,9 +22,15 @@ const initialState: State = {
     new Ingredient('Apples', 5),
     new Ingredient('Tomatoes', 2),
   ],
-  editItemAt: -1,
-  editIngredient: null,
+  ...closeIngredientForEditing(),
 };
+
+function closeIngredientForEditing() {
+  return {
+    editItemAt: -1,
+    editIngredient: null,
+  };
+}
 
 export function shoppingListReducer(state = initialState, action: ShoppingListActions) {
   switch (action.type) {
@@ -35,7 +41,7 @@ export function shoppingListReducer(state = initialState, action: ShoppingListAc
       return updateIngredient(state, action);
 
     case DELETE_INGREDIENT:
-      return deleteIngredient(state, action);
+      return deleteIngredient(state);
 
     case OPEN_INGREDIENT:
       return openIngredientForEditing(state, action);
@@ -54,21 +60,24 @@ function addIngredients(state, action) {
 }
 
 function updateIngredient(state, action) {
-  const { index, ingredient } = action.payload;
+  const { ingredient } = action.payload;
+  const index = state.editItemAt;
   const ingredients = [...state.ingredients];
   const updatedIngredient = { ...ingredients[index], ...ingredient };
   ingredients[index] = updatedIngredient;
   return {
     ...state,
+    ...closeIngredientForEditing(),
     ingredients,
   };
 }
 
-function deleteIngredient(state, action) {
-  const { payload: index } = action;
+function deleteIngredient(state) {
+  const index = state.editItemAt;
   const { ingredients } = state;
   return {
     ...state,
+    ...closeIngredientForEditing(),
     ingredients: [...ingredients.slice(0, index), ...ingredients.slice(index + 1)],
   };
 }
