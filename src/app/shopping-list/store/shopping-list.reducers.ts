@@ -4,7 +4,8 @@ import {
   ADD_INGREDIENTS,
   UPDATE_INGREDIENT,
   DELETE_INGREDIENT,
-  OPEN_INGREDIENT
+  OPEN_INGREDIENT,
+  CLOSE_INGREDIENT
 } from './shoping-list.actions';
 
 export interface AppState {
@@ -22,18 +23,15 @@ const initialState: State = {
     new Ingredient('Apples', 5),
     new Ingredient('Tomatoes', 2),
   ],
-  ...closeIngredientForEditing(),
+  editItemAt: -1,
+  editIngredient: null,
 };
-
-function closeIngredientForEditing() {
-  return {
-    editItemAt: -1,
-    editIngredient: null,
-  };
-}
 
 export function shoppingListReducer(state = initialState, action: ShoppingListActions) {
   switch (action.type) {
+    case CLOSE_INGREDIENT:
+      return closeIngredientForEditing(state);
+
     case ADD_INGREDIENTS:
       return addIngredients(state, action);
 
@@ -49,6 +47,14 @@ export function shoppingListReducer(state = initialState, action: ShoppingListAc
     default:
       return state;
   }
+}
+
+function closeIngredientForEditing(state) {
+  return {
+    ...state,
+    editItemAt: initialState.editItemAt,
+    editIngredient: initialState.editIngredient,
+  };
 }
 
 function addIngredients(state, action) {
@@ -67,7 +73,6 @@ function updateIngredient(state, action) {
   ingredients[index] = updatedIngredient;
   return {
     ...state,
-    ...closeIngredientForEditing(),
     ingredients,
   };
 }
@@ -77,7 +82,6 @@ function deleteIngredient(state) {
   const { ingredients } = state;
   return {
     ...state,
-    ...closeIngredientForEditing(),
     ingredients: [...ingredients.slice(0, index), ...ingredients.slice(index + 1)],
   };
 }
