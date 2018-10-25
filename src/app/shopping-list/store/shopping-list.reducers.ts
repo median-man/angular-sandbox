@@ -6,11 +6,19 @@ import {
   DELETE_INGREDIENT
 } from './shoping-list.actions';
 
-const initialState = {
+export interface AppState {
+  shoppingList: State;
+}
+
+export interface State {
+  ingredients: Ingredient[];
+}
+
+const initialState: State = {
   ingredients: [
     new Ingredient('Apples', 5),
     new Ingredient('Tomatoes', 2),
-  ],
+  ]
 };
 
 export function shoppingListReducer(state = initialState, action: ShoppingListActions) {
