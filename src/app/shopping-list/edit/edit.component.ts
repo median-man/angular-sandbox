@@ -1,12 +1,13 @@
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Subscription } from 'rxjs';
+import { Store } from '@ngrx/store';
 
 import { Ingredient } from '../../shared/ingredient.model';
 import { ShoppingListService } from '../shopping-list.service';
-import { Store } from '@ngrx/store';
 
 import { AddIngredients, DeleteIngredient, UpdateIngredient } from '../store/shoping-list.actions';
+import { AppState } from '../store/shopping-list.reducers';
 
 @Component({
   selector: 'app-shopping-list-edit',
@@ -21,7 +22,7 @@ export class ShoppingListEditComponent implements OnInit, OnDestroy {
 
   constructor(
     private shoppingListService: ShoppingListService,
-    private store: Store<{shoppingList: { ingredients: Ingredient[] } }>
+    private store: Store<AppState>
   ) { }
 
   resetForm() {
