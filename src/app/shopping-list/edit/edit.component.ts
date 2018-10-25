@@ -5,7 +5,7 @@ import { Store } from '@ngrx/store';
 
 import { Ingredient } from '../../shared/ingredient.model';
 
-import { AddIngredients, DeleteIngredient, UpdateIngredient } from '../store/shoping-list.actions';
+import { AddIngredients, DeleteIngredient, UpdateIngredient, CloseIngredient } from '../store/shoping-list.actions';
 import { AppState } from '../store/shopping-list.reducers';
 
 @Component({
@@ -22,6 +22,7 @@ export class ShoppingListEditComponent implements OnInit, OnDestroy {
 
   resetForm() {
     this.editMode = false;
+    this.store.dispatch(new CloseIngredient());
     this.form.reset();
   }
 
@@ -57,6 +58,9 @@ export class ShoppingListEditComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
+    if (this.editMode) {
+      this.resetForm();
+    }
     this.editItemSub.unsubscribe();
   }
 }
