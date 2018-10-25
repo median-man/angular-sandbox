@@ -3,10 +3,15 @@ import { NgForm } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { Store } from '@ngrx/store';
 
+import { AppState } from 'src/app/store/app.reducers';
 import { Ingredient } from '../../shared/ingredient.model';
 
-import { AddIngredients, DeleteIngredient, UpdateIngredient, CloseIngredient } from '../store/shoping-list.actions';
-import { AppState } from '../store/shopping-list.reducers';
+import {
+  AddIngredients,
+  DeleteIngredient,
+  UpdateIngredient,
+  CloseIngredient,
+} from '../store/shoping-list.actions';
 
 @Component({
   selector: 'app-shopping-list-edit',

@@ -8,10 +8,6 @@ import {
   CLOSE_INGREDIENT
 } from './shoping-list.actions';
 
-export interface AppState {
-  shoppingList: State;
-}
-
 export interface State {
   ingredients: Ingredient[];
   editItemAt: number;

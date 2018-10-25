@@ -3,7 +3,7 @@ import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 
 import { AddIngredients } from 'src/app/shopping-list/store/shoping-list.actions';
-import { AppState } from 'src/app/shopping-list/store/shopping-list.reducers';
+import { AppState } from 'src/app/store/app.reducers';
 import { Recipe } from '../recipe.model';
 import { RecipeService } from '../recipe.service';
 

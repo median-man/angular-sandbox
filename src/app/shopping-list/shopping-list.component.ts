@@ -3,8 +3,8 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 
+import { AppState } from 'src/app/store/app.reducers';
 import { Ingredient } from '../shared/ingredient.model';
-import { AppState } from './store/shopping-list.reducers';
 import {
   OpenIngredient as OpenIngredientForEditing,
 } from './store/shoping-list.actions';
