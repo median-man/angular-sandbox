@@ -4,7 +4,6 @@ import { Subscription } from 'rxjs';
 import { Store } from '@ngrx/store';
 
 import { Ingredient } from '../../shared/ingredient.model';
-import { ShoppingListService } from '../shopping-list.service';
 
 import { AddIngredients, DeleteIngredient, UpdateIngredient } from '../store/shoping-list.actions';
 import { AppState } from '../store/shopping-list.reducers';
@@ -18,12 +17,8 @@ export class ShoppingListEditComponent implements OnInit, OnDestroy {
   @ViewChild('editForm') form: NgForm;
   editMode = false;
   private editItemSub: Subscription;
-  private editItemIndex: number;
 
-  constructor(
-    private shoppingListService: ShoppingListService,
-    private store: Store<AppState>
-  ) { }
+  constructor(private store: Store<AppState>) { }
 
   resetForm() {
     this.editMode = false;
@@ -34,8 +29,7 @@ export class ShoppingListEditComponent implements OnInit, OnDestroy {
     const { value: { name, amount } } = form;
     const ingredient = new Ingredient(name, amount);
     if (this.editMode) {
-      const index = this.editItemIndex;
-      this.store.dispatch(new UpdateIngredient({ index, ingredient }));
+      this.store.dispatch(new UpdateIngredient({ ingredient }));
     } else {
       this.store.dispatch(new AddIngredients([ingredient]));
     }
@@ -43,19 +37,23 @@ export class ShoppingListEditComponent implements OnInit, OnDestroy {
   }
 
   onDelete() {
-    this.store.dispatch(new DeleteIngredient(this.editItemIndex));
+    this.store.dispatch(new DeleteIngredient());
     this.resetForm();
   }
 
   ngOnInit() {
-    this.editItemSub = this.shoppingListService
-      .editItem
-      .subscribe((itemIndex: number) => {
-        this.editMode = true;
-        this.editItemIndex = itemIndex;
-        const ingredient = this.shoppingListService.getIngredientAt(itemIndex);
-        this.form.setValue(ingredient);
-      });
+    this.editItemSub = this.store
+      .select('shoppingList')
+      .subscribe(data => this.onData(data));
+  }
+
+  onData(data) {
+    if (data.editItemAt > -1) {
+      this.editMode = true;
+      this.form.setValue(data.editIngredient);
+    } else {
+      this.editMode = false;
+    }
   }
 
   ngOnDestroy() {
