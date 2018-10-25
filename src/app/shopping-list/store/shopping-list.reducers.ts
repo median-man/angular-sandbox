@@ -1,5 +1,9 @@
 import { Ingredient } from 'src/app/shared/ingredient.model';
-import { ShoppingListActions, ADD_INGREDIENTS } from './shoping-list.actions';
+import {
+  ShoppingListActions,
+  ADD_INGREDIENTS,
+  DELETE_INGREDIENT
+} from './shoping-list.actions';
 
 const initialState = {
   ingredients: [
@@ -13,6 +17,9 @@ export function shoppingListReducer(state = initialState, action: ShoppingListAc
     case ADD_INGREDIENTS:
       return addIngredients(state, action);
 
+    case DELETE_INGREDIENT:
+      return deleteIngredient(state, action);
+
     default:
       return state;
   }
@@ -23,5 +30,13 @@ function addIngredients(state, action) {
   return {
     ...state,
     ingredients: state.ingredients.concat(ingredients),
+  };
+}
+function deleteIngredient(state, action) {
+  const { payload: index } = action;
+  const { ingredients } = state;
+  return {
+    ...state,
+    ingredients: [...ingredients.slice(0, index), ...ingredients.slice(index + 1)],
   };
 }
