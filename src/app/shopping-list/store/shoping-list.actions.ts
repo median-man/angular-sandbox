@@ -5,6 +5,7 @@ import { Ingredient } from '../../shared/ingredient.model';
 export const ADD_INGREDIENTS = 'ADD_INGREDIENTS';
 export const UPDATE_INGREDIENT = 'UPDATE_INGREDIENT';
 export const DELETE_INGREDIENT = 'DELETE_INGREDIENT';
+export const OPEN_INGREDIENT = 'OPEN_INGREDIENT'; // open for editing
 
 export class AddIngredients implements Action {
   readonly type = ADD_INGREDIENTS;
@@ -24,4 +25,15 @@ export class DeleteIngredient implements Action {
   constructor(public payload: number) { }
 }
 
-export type ShoppingListActions = AddIngredients | DeleteIngredient | UpdateIngredient;
+// Action to open an ingredient for editing
+export class OpenIngredient implements Action {
+  readonly type = OPEN_INGREDIENT;
+
+  constructor(public payload: number) { }
+}
+
+export type ShoppingListActions =
+  AddIngredients
+  | DeleteIngredient
+  | UpdateIngredient
+  | OpenIngredient;
