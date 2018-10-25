@@ -4,6 +4,9 @@ import { Subscription } from 'rxjs';
 
 import { Ingredient } from '../../shared/ingredient.model';
 import { ShoppingListService } from '../shopping-list.service';
+import { Store } from '@ngrx/store';
+
+import { AddIngredients } from '../store/shoping-list.actions';
 
 @Component({
   selector: 'app-shopping-list-edit',
@@ -16,7 +19,10 @@ export class ShoppingListEditComponent implements OnInit, OnDestroy {
   private editItemSub: Subscription;
   private editItemIndex: number;
 
-  constructor(private shoppingListService: ShoppingListService) { }
+  constructor(
+    private shoppingListService: ShoppingListService,
+    private store: Store<{shoppingList: { ingredients: Ingredient[] } }>
+  ) { }
 
   resetForm() {
     this.editMode = false;
@@ -29,7 +35,7 @@ export class ShoppingListEditComponent implements OnInit, OnDestroy {
     if (this.editMode) {
       this.shoppingListService.changeIngredientAt(ingredient, this.editItemIndex);
     } else {
-      this.shoppingListService.addIngredient(ingredient);
+      this.store.dispatch(new AddIngredients([ingredient]));
     }
     this.resetForm();
   }
