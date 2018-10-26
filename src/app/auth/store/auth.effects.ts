@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import { Effect, Actions } from '@ngrx/effects';
 import { from } from 'rxjs';
 import { map, switchMap, mergeMap, tap } from 'rxjs/operators';
-
 import * as firebase from 'firebase/app';
 import 'firebase/auth';
 
@@ -43,6 +43,7 @@ export class AuthEffects {
       map((action: TrySignup) => action.payload),
       switchMap(fbAuth.createUser),
       switchMap(fbAuth.getToken),
+      tap(() => this.router.navigate(['/'])),
       mergeMap((token: string) => [
         { type: SIGNUP },
         { type: SET_TOKEN, payload: token },
@@ -56,6 +57,7 @@ export class AuthEffects {
       map((action: TrySignup) => action.payload),
       switchMap(fbAuth.signin),
       switchMap(fbAuth.getToken),
+      tap(() => this.router.navigate(['/'])),
       mergeMap((token: string) => [
         { type: SIGNIN },
         { type: SET_TOKEN, payload: token },
@@ -67,5 +69,5 @@ export class AuthEffects {
     .ofType(LOGOUT)
     .pipe(map(fbAuth.logout), tap(() => console.log('logged out successfully')));
 
-  constructor(private actions$: Actions) { }
+  constructor(private actions$: Actions, private router: Router) { }
 }
