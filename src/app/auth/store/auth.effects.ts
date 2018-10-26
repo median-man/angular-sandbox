@@ -67,7 +67,10 @@ export class AuthEffects {
   @Effect({ dispatch: false })
   authLogout$ = this.actions$
     .ofType(LOGOUT)
-    .pipe(map(fbAuth.logout), tap(() => console.log('logged out successfully')));
+    .pipe(
+      map(fbAuth.logout),
+      tap(() => this.router.navigate(['/']),
+    ));
 
   constructor(private actions$: Actions, private router: Router) { }
 }
