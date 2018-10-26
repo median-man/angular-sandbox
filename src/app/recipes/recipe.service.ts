@@ -58,12 +58,6 @@ export class RecipeService {
     return (parseFloat(maxId) + 1).toString();
   }
 
-  deleteRecipe = (id: string) => {
-    this.recipes = this.recipes.filter((recipe) => recipe.id !== id);
-    this.recipesChanged.next(this.getRecipes());
-    return this;
-  }
-
   setAll = (recipes: Recipe[]) => {
     this.recipes = [...recipes];
     this.recipesChanged.next(this.getRecipes());
