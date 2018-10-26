@@ -1,16 +1,19 @@
 import { Injectable } from '@angular/core';
 import { CanActivate } from '@angular/router';
+import { map } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { Store } from '@ngrx/store';
 
-import { AuthService } from './auth.service';
-import { RecipesModule } from '../recipes/recipes.module';
-import { RecipesRoutingModule } from '../recipes/recipes-routing.module';
+import { AppState } from '../store/app.reducers';
 
 @Injectable()
 export class AuthGuardService implements CanActivate {
 
-  constructor(private authService: AuthService) { }
+  constructor(private store: Store<AppState>) { }
 
-  canActivate() {
-    return this.authService.isAuthenticated();
+  canActivate(): Observable<boolean> {
+    return this.store
+      .select('auth')
+      .pipe(map(authState => authState.isAuthenticated));
   }
 }
