@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 import { AppState } from 'src/app/store/app.reducers';
 import { Logout } from 'src/app/auth/store/auth.actions';
-import { DataStorageService } from 'src/app/shared/data-storage.service';
-import { map } from 'rxjs/operators';
+import { FetchRecipes, SaveRecipes } from 'src/app/recipes/store/recipe.actions';
 
 
 @Component({
@@ -16,26 +16,15 @@ import { map } from 'rxjs/operators';
 export class HeaderComponent {
   isAuthenticated: Observable<boolean>;
 
-  constructor(
-    private store: Store<AppState>,
-    private dataStorageSvc: DataStorageService,
-  ) {
+  constructor(private store: Store<AppState>) {
     this.isAuthenticated = this.store
       .select('auth')
       .pipe(map(({ isAuthenticated }) => isAuthenticated));
   }
 
-  onSaveData = () => this.dataStorageSvc
-    .storeRecipes()
-    .subscribe(
-      (data) => console.log(data)
-    )
+  onSaveData = () => this.store.dispatch(new SaveRecipes());
 
-  onFetchData = () => this.dataStorageSvc
-    .getRecipes()
-    .subscribe(
-      (data) => console.log(data)
-    )
+  onFetchData = () => this.store.dispatch(new FetchRecipes());
 
   onSignout = () => this.store.dispatch(new Logout());
 }
