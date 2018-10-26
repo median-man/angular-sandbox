@@ -1,10 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, FormArray, Validators } from '@angular/forms';
 import { ActivatedRoute, Params, Router } from '@angular/router';
+import { Store } from '@ngrx/store';
+import { take } from 'rxjs/operators';
 
 import { Ingredient } from 'src/app/shared/ingredient.model';
-import { RecipeService } from '../recipe.service';
 import { Recipe } from '../recipe.model';
+import { FeatureState } from '../store/recipe.reducers';
+import { UpdateRecipe, AddRecipe } from '../store/recipe.actions';
 
 @Component({
   selector: 'app-edit-recipe',
@@ -18,8 +21,8 @@ export class EditRecipeComponent implements OnInit {
   recipeForm: FormGroup;
 
   constructor(
+    private store: Store<FeatureState>,
     private route: ActivatedRoute,
-    private recipeService: RecipeService,
     private router: Router
   ) { }
 
@@ -36,11 +39,15 @@ export class EditRecipeComponent implements OnInit {
     const ingredientControls = new FormArray([]);
 
     if (this.editMode) {
-      recipe = this.recipeService.getRecipeById(this.id);
-
-      recipe.ingredients
-        .map(this.createIngredientCtrl)
-        .forEach(control => ingredientControls.push(control));
+      this.store
+        .select('recipes')
+        .pipe(take(1))
+        .subscribe(({ recipes }) => {
+          recipe = recipes.filter(({ id }) => id === this.id)[0];
+          recipe.ingredients
+            .map(this.createIngredientCtrl)
+            .forEach(control => ingredientControls.push(control));
+        });
     } else {
       recipe = new Recipe('', '', '', '', []);
     }
@@ -73,16 +80,12 @@ export class EditRecipeComponent implements OnInit {
   onSubmit() {
     const { name, imagePath, description, ingredients } = this.recipeForm.value;
     const recipe = new Recipe(this.id, name, description, imagePath, ingredients);
-    let navPath = '../';
 
     if (this.editMode) {
-      this.recipeService.updateRecipe(recipe);
+      this.store.dispatch(new UpdateRecipe(recipe));
     } else {
-      recipe.id = this.recipeService.addRecipe(recipe).id;
-      navPath += recipe.id;
+      this.store.dispatch(new AddRecipe(recipe));
     }
-
-    this.router.navigate([navPath], { relativeTo: this.route });
   }
 
   onCancel() {
