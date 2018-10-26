@@ -1,6 +1,12 @@
 import { Component } from '@angular/core';
-import { DataStorageService } from '../../shared/data-storage.service';
-import { AuthService } from '../../auth/auth.service';
+import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
+
+import { AppState } from 'src/app/store/app.reducers';
+import { Logout } from 'src/app/auth/store/auth.actions';
+import { DataStorageService } from 'src/app/shared/data-storage.service';
+import { map } from 'rxjs/operators';
+
 
 @Component({
   selector: 'app-header',
@@ -8,10 +14,16 @@ import { AuthService } from '../../auth/auth.service';
   styleUrls: ['./header.component.css']
 })
 export class HeaderComponent {
+  isAuthenticated: Observable<boolean>;
+
   constructor(
-    public authService: AuthService,
+    private store: Store<AppState>,
     private dataStorageSvc: DataStorageService,
-  ) { }
+  ) {
+    this.isAuthenticated = this.store
+      .select('auth')
+      .pipe(map(({ isAuthenticated }) => isAuthenticated));
+  }
 
   onSaveData = () => this.dataStorageSvc
     .storeRecipes()
@@ -25,5 +37,5 @@ export class HeaderComponent {
       (data) => console.log(data)
     )
 
-  onSignout = () => this.authService.logout();
+  onSignout = () => this.store.dispatch(new Logout());
 }
