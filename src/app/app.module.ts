@@ -4,6 +4,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { StoreRouterConnectingModule } from '@ngrx/router-store';
 
 import { environment } from 'src/environments/environment';
 import { AppRoutingModule } from './app-routing.module';
@@ -29,6 +30,7 @@ import { AuthEffects } from './auth/store/auth.effects';
     StoreModule.forRoot(reducers),
     EffectsModule.forRoot([AuthEffects]),
     environment.production ? [] : StoreDevtoolsModule.instrument(),
+    StoreRouterConnectingModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
