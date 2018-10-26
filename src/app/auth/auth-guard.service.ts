@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { CanActivate } from '@angular/router';
-import { map } from 'rxjs/operators';
+import { map, take } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
 
@@ -14,6 +14,9 @@ export class AuthGuardService implements CanActivate {
   canActivate(): Observable<boolean> {
     return this.store
       .select('auth')
-      .pipe(map(authState => authState.isAuthenticated));
+      .pipe(
+        take(1),
+        map(authState => authState.isAuthenticated),
+      );
   }
 }
