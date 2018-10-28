@@ -1,10 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Effect, Actions } from '@ngrx/effects';
-import { from } from 'rxjs';
 import { map, switchMap, mergeMap, tap } from 'rxjs/operators';
-import * as firebase from 'firebase/app';
-import 'firebase/auth';
+
+import * as authApi from '../auth-api-gateway';
 
 import {
   TrySignup,
@@ -16,24 +15,6 @@ import {
   LOGOUT,
 } from './auth.actions';
 
-const fbAuth = {
-  createUser: ({email, password}) => from(
-    firebase
-      .auth()
-      .createUserWithEmailAndPassword(email, password)
-  ),
-
-  signin: ({email, password}) => from(
-    firebase
-      .auth()
-      .signInWithEmailAndPassword(email, password)
-  ),
-
-  getToken: () => from(firebase.auth().currentUser.getIdToken()),
-
-  logout: () => from(firebase.auth().signOut()),
-};
-
 @Injectable()
 export class AuthEffects {
   @Effect()
@@ -41,8 +22,8 @@ export class AuthEffects {
     .ofType(TRY_SIGNUP)
     .pipe(
       map((action: TrySignup) => action.payload),
-      switchMap(fbAuth.createUser),
-      switchMap(fbAuth.getToken),
+      switchMap(authApi.createUser),
+      switchMap(authApi.getToken),
       tap(() => this.router.navigate(['/'])),
       mergeMap((token: string) => [
         { type: SIGNUP },
@@ -55,8 +36,8 @@ export class AuthEffects {
     .ofType(TRY_SIGNIN)
     .pipe(
       map((action: TrySignup) => action.payload),
-      switchMap(fbAuth.signin),
-      switchMap(fbAuth.getToken),
+      switchMap(authApi.signin),
+      switchMap(authApi.getToken),
       tap(() => this.router.navigate(['/'])),
       mergeMap((token: string) => [
         { type: SIGNIN },
@@ -68,7 +49,7 @@ export class AuthEffects {
   authLogout$ = this.actions$
     .ofType(LOGOUT)
     .pipe(
-      map(fbAuth.logout),
+      map(authApi.logout),
       tap(() => this.router.navigate(['/']),
     ));
 
